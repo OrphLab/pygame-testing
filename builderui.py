@@ -21,5 +21,5 @@ class MainSurface:
         self.spritesrf.fill((0,255,0))
     
     def drawrect(self):
-        pygame.draw.rect(self.mainsrf, (10,122,255), pygame.Rect((1150,35), (100,100)))
+        pygame.draw.rect(self.mainsrf, (10,122,255), pygame.Rect((800,35), (100,100)))
         

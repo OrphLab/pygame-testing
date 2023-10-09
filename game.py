@@ -1,7 +1,7 @@
 import pygame
 from world import World
 from player import Player
-from testui import MainSurface
+from builderui import MainSurface
 
 class Game:
     def __init__(self, size, type = None) -> None:
