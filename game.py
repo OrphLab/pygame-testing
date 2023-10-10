@@ -1,10 +1,10 @@
 import pygame
 from world import World
 from player import Player
-from builderui import MainSurface
+from builderui import BuilderUI
 
 class Game:
-    def __init__(self, size, type = None) -> None:
+    def __init__(self, size:tuple, type:str = None) -> None:
         self.screen = pygame.display.set_mode(size)
         self.clock = pygame.time.Clock()
         self.fps = 60
@@ -12,7 +12,7 @@ class Game:
         self.world = World(self.screen)
         self.player = Player((250,400), self.screen, self.world.world_tiles)
         self.type = type
-        self.mainsrf = MainSurface(self.screen)
+        self.mainsrf = BuilderUI(self.screen)
         
 
     def run(self):
@@ -21,8 +21,11 @@ class Game:
         while self.running:
             self.clock.tick(self.fps)
             self.screen.fill((110,25,255))
-            player_camera_x  = self.player.camera[0]
-            player_camera_y  = self.player.camera[1]
+            # player_camera_x  = self.player.camera[0]
+            # player_camera_y  = self.player.camera[1]
+
+            mouse = pygame.mouse.get_pos()
+
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -34,8 +37,9 @@ class Game:
                 self.player.update()
                 self.world.draw_world(self.player)
             elif self.type == "Testing":
-                self.mainsrf.drawmainsrf()
-                self.mainsrf.drawspritesrf()
+                self.mainsrf.ui_update()
+                self.mainsrf.tile_highlight(mouse)
+
 
             pygame.display.update()
 
