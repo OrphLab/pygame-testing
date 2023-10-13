@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
 
         self.camera[0] = (self.rect.x - self.screen_width //2) * self.camera_speed
         self.camera[1] = (self.rect.y - self.screen_height //2) * self.camera_speed
-        print("camera", self.camera[0], self.camera[1])
+        #print("camera", self.camera[0], self.camera[1])
         movement_x:float = 0
         movement_y:float = 0
         anim_cooldown:int = 5
@@ -109,8 +109,3 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += movement_y
 
         self.screen.blit(self.image, (self.rect.x - int(self.camera[0]), self.rect.y - int(self.camera[1])))
-        print("player: ", self.camera[0], self.camera[1])
-                         
-
-   
-

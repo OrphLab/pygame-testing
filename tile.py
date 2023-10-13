@@ -11,7 +11,6 @@ tile_selection = {
     'lbbox' : (3,21),
     'rbbox' : (4,21)  
 }
-
 class Tilesheet:
         def __init__(self, filename, twidth, theight, nrow, ncol, screen) -> None:
             
@@ -58,3 +57,13 @@ class Tile(pygame.sprite.Sprite):
             return img
         else:
             None
+    
+    def draw_tile(self, tile, tile_x, tile_y, surface):
+        print("im here")
+        surface.blit(tile, (tile_x, tile_y))
+
+        
+
+
+ 
+        

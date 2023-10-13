@@ -7,15 +7,16 @@ class World:
         self.tilsheet = Tilesheet("img/tiles/tileset.png",16,16,23,25,screen)  
         self.screen = screen
         self.world_tiles = self.read_worlddata() 
-
-
+        self.drag_tile = False
+        
     def draw_world(self, player):
         camera = player.camera
         for tile in self.world_tiles:
             self.screen.blit(tile.image, (tile.rect.x - camera[0], tile.rect.y - camera[1]))
-        print("world: ", camera[0], camera[1])
-        
-#        self.tilsheet.draw_tilesheet()
+    
+    def draw_world_mb(self, surface, offset):
+        for tile in self.world_tiles:
+            surface.blit(tile.image, (tile.rect.x-offset[0], tile.rect.y-offset[1]))
 
     def read_worlddata(self) -> list:
         world_data = pygame.sprite.Group()
@@ -33,5 +34,3 @@ class World:
                     else:
                         print("read_worlddata error")
         return world_data
-
-

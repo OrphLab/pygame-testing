@@ -12,35 +12,54 @@ class Game:
         self.world = World(self.screen)
         self.player = Player((250,400), self.screen, self.world.world_tiles)
         self.type = type
-        self.mainsrf = BuilderUI(self.screen)
+        self.map_building_srf = BuilderUI(self.screen)
+        self.dragging = False
+        self.offset = [0,0]
+        self.delta_offset = []
         
-
     def run(self):
         self.running = True
         
         while self.running:
+            events = pygame.event.get()
             self.clock.tick(self.fps)
             self.screen.fill((110,25,255))
-            # player_camera_x  = self.player.camera[0]
-            # player_camera_y  = self.player.camera[1]
 
-            mouse = pygame.mouse.get_pos()
-
-            
-            for event in pygame.event.get():
+            for event in events:
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
+                    if event.key == pygame.K_1:
+                        print("one was pressed")
+               #TODO rewrite the two for loops into functions
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                    for grid_rect in self.map_building_srf.grid_rects:
+                        if grid_rect.collidepoint(event.pos):
+                            self.dragging = True
+                            self.delta_offset = event.pos[0]-grid_rect.x, event.pos[1]-grid_rect.y
+                    for tile in self.world.world_tiles:
+                        tile_rect = tile.rect
+                        if tile.rect.collidepoint(event.pos):
+                            self.dragging = True
+                            self.delta_offset = event.pos[0]-tile_rect.x, event.pos[1]-tile_rect.y
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.dragging = False
+                if event.type == pygame.MOUSEMOTION and self.dragging == True:
+                    self.offset = event.pos[0]-self.delta_offset[0], event.pos[1]-self.delta_offset[1]
+
             if self.type == None:
+            
                 self.player.update()
                 self.world.draw_world(self.player)
-            elif self.type == "Testing":
-                self.mainsrf.ui_update()
-                self.mainsrf.tile_highlight(mouse)
-
-
+            
+            if self.type == "Building":
+                self.map_building_srf.update()
+                self.map_building_srf.draw_rect_grid(self.offset)
+                self.world.draw_world_mb(self.map_building_srf.mainsrf, self.offset)
+                self.map_building_srf.tile_highlight(pygame.mouse.get_pos(), self.offset)
+                
             pygame.display.update()
 
 pygame.quit() 
