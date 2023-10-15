@@ -1,6 +1,7 @@
 import pygame
 from world import World
 from player import Player
+from tile import Tilesheet
 from builderui import BuilderUI
 
 class Game:
@@ -8,15 +9,17 @@ class Game:
         self.screen = pygame.display.set_mode(size)
         self.clock = pygame.time.Clock()
         self.fps = 60
+        self.type = type
         self.running = False
         self.world = World(self.screen)
-        self.player = Player((250,400), self.screen, self.world.world_tiles)
-        self.type = type
+        self.player = Player((250,400), self.screen, self.world.all_tiles)
         self.map_building_srf = BuilderUI(self.screen)
         self.dragging = False
         self.offset = [0,0]
         self.delta_offset = []
-        
+
+        self.world.read_world_data()
+
     def run(self):
         self.running = True
         
@@ -39,7 +42,7 @@ class Game:
                         if grid_rect.collidepoint(event.pos):
                             self.dragging = True
                             self.delta_offset = event.pos[0]-grid_rect.x, event.pos[1]-grid_rect.y
-                    for tile in self.world.world_tiles:
+                    for tile in self.world.all_tiles:
                         tile_rect = tile.rect
                         if tile.rect.collidepoint(event.pos):
                             self.dragging = True

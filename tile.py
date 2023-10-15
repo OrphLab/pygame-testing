@@ -38,6 +38,7 @@ class Tilesheet:
                     self.screen.blit(tile, (x*30, y*30))
         
 class Tile(pygame.sprite.Sprite):
+    all_tiles = pygame.sprite.Group()
     def __init__(self, type, pos, screen, tilesheet):
         super().__init__()
         self.tilesheet = tilesheet
@@ -46,6 +47,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.type, (50,50))
         self.rect = self.image.get_rect(topleft=pos)
         self.screen = screen
+        Tile.all_tiles.add(self)
 
     def __str__(self) -> str:
         return "sprite{%s-(%s,%s)}"%(self.string_type, self.rect.x, self.rect.y)
@@ -62,7 +64,8 @@ class Tile(pygame.sprite.Sprite):
         print("im here")
         surface.blit(tile, (tile_x, tile_y))
 
-        
+              
+    
 
 
  

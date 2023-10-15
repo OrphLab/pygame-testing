@@ -1,25 +1,26 @@
 import pygame
 from tile import Tile, Tilesheet
-from player import Player
 
 class World:
     def __init__(self, screen) -> None:
-        self.tilsheet = Tilesheet("img/tiles/tileset.png",16,16,23,25,screen)  
+        self.all_tiles = Tile.all_tiles
         self.screen = screen
-        self.world_tiles = self.read_worlddata() 
-        self.drag_tile = False
-        
+        self.tilesheet = self.tilsheet = Tilesheet("img/tiles/tileset.png",16,16,23,25,self.screen) 
+    
+    #draws tile to game
     def draw_world(self, player):
         camera = player.camera
-        for tile in self.world_tiles:
+        for tile in self.all_tiles:
+            type(tile)
             self.screen.blit(tile.image, (tile.rect.x - camera[0], tile.rect.y - camera[1]))
     
+    #draws tiles to mapbuilder
     def draw_world_mb(self, surface, offset):
-        for tile in self.world_tiles:
+        for tile in self.all_tiles:
             surface.blit(tile.image, (tile.rect.x-offset[0], tile.rect.y-offset[1]))
 
-    def read_worlddata(self) -> list:
-        world_data = pygame.sprite.Group()
+    #reads worlddata and pupulates all_tiles group
+    def read_world_data(self):
         file = "worlddata.txt"
         with open(file, encoding="utf-8") as f:
             for line in f:
@@ -29,8 +30,7 @@ class World:
                     if len(parts) == 2:
                         type = parts[0]
                         pos = tuple(map(int, parts[1].strip("()").split(",")))
-                        tile = Tile(type, pos, self.screen, self.tilsheet)
-                        world_data.add(tile)
+                        Tile(type, pos, self.screen, self.tilesheet)
                     else:
                         print("read_worlddata error")
-        return world_data
+        
